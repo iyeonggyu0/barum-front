@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import { NotFound } from "./pages";
+import { HomePage, NotFound } from "./pages";
 
 function App() {
   return (
-    <section>
+    <section css={{ height: "100%" }}>
       {/* portfolio */}
       <Routes>
-        <Route path="/" element={<></>} />
+        <Route path="/" element={<HomePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </section>

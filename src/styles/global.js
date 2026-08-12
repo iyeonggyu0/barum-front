@@ -17,6 +17,8 @@ export const globalStyles = css({
   },
 
   body: {
+    margin: 0,
+    padding: "0",
     minHeight: "100%",
     fontWeight: 400,
     color: "#333333",

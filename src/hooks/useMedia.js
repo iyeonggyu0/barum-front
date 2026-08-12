@@ -6,15 +6,16 @@ import { useMediaQuery } from "react-responsive";
  */
 export const useMedia = () => {
   const isPc = useMediaQuery({
-    query: "(min-width:1200px)",
+    query: "(min-width:900px)",
   });
 
   const isTablet = useMediaQuery({
-    query: "(min-width:1024px)",
+    query: "(min-width:899px)",
   });
 
+  // 태블릿 범위를 포함하도록 max-width를 1199px로 변경 (PC 시작점 직전까지)
   const isMobile = useMediaQuery({
-    query: "(max-width:767px)",
+    query: "(max-width:899px)",
   });
 
   return { isPc, isTablet, isMobile };

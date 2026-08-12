@@ -9,6 +9,7 @@ import App from "./App.jsx";
 import { theme } from "./styles/theme";
 import { globalStyles } from "./styles/global";
 import "./index.css";
+import { MobileFrame } from "./layouts/index.js";
 
 const queryClient = new QueryClient();
 
@@ -19,7 +20,10 @@ createRoot(document.getElementById("root")).render(
         <ThemeProvider theme={theme}>
           <Global styles={globalStyles} />
           <BrowserRouter>
-            <App />
+            {/* 모바일 프레임 */}
+            <MobileFrame>
+              <App />
+            </MobileFrame>
           </BrowserRouter>
         </ThemeProvider>
       </JotaiProvider>

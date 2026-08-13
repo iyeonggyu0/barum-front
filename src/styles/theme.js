@@ -12,14 +12,14 @@ export const flex = {
   rowStart: {
     display: "flex",
     justifyContent: "flex-start",
-    alignItems: "center",
+    // alignItems: "center",
   },
 
   colStart: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
-    alignItems: "center",
+    // alignItems: "center",
   },
 
   colEnd: {
@@ -158,8 +158,12 @@ export const colors = {
   camGlow: "#4A4E4A", // --brm-cam-glow
 };
 
+const shadow = {
+  boxShadow: "0 4px 24px rgba(53, 60, 55, .05)",
+};
+
 // import { css } from "@emotion/react";
 // import { theme } from "@/styles/theme";
 // import { mq } from "@/styles/mq";
 
-export const theme = { fonts, colors, flex };
+export const theme = { fonts, colors, flex, shadow };

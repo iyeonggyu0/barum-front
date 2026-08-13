@@ -17,12 +17,23 @@ const HomeLayout = ({ children }) => {
     width: "100%",
     height: "calc(100% - 68px)",
     overflowY: "auto",
+    // 파이어폭스 스크롤바 숨김
+    scrollbarWidth: "none",
+
+    // IE, Edge 스크롤바 숨김
+    msOverflowStyle: "none",
+
+    // 크롬, 사파리, 오페라 스크롤바 숨김
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
   };
+
   return (
     <main css={style}>
       <div css={divStyle}>
         <Header />
-        <section>{children}</section>
+        {children}
       </div>
       <Menu />
     </main>

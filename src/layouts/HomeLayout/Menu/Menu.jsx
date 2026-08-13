@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { MenuStyle } from "./Menu.style";
+import { menuStyle } from "./Menu.style";
 import { theme } from "@/styles/theme";
 
 const Menu = () => {
@@ -23,7 +23,7 @@ const Menu = () => {
   };
 
   return (
-    <nav css={MenuStyle}>
+    <nav css={menuStyle}>
       <span onClick={() => nav("/")} css={urlCheck("/")}>
         오늘
       </span>

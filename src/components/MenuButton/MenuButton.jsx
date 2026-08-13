@@ -1,10 +1,10 @@
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { MenuButtonStyle } from "./MenuButton.style";
+import { menuButtonStyle } from "./MenuButton.style";
 
 const MenuButton = () => {
   return (
-    <div css={MenuButtonStyle}>
+    <div css={menuButtonStyle}>
       <FontAwesomeIcon icon={faBars} />
     </div>
   );

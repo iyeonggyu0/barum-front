@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { theme } from "@/styles/theme";
 
-export const ExVanityStyle = css({
+export const exVanityStyle = css({
   ...theme.flex.center,
   ...theme.fonts.micro,
   width: "fit-content",

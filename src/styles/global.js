@@ -3,11 +3,11 @@ import { css } from "@emotion/react";
 export const globalStyles = css({
   "*, *::before, *::after": {
     boxSizing: "border-box",
-    // margin: 0,
-    // padding: 0,
+    margin: 0,
+    padding: 0,
     WebkitFontSmoothing: "antialiased",
     MozOsxFontSmoothing: "grayscale",
-    fontFamily: '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif',
+    fontFamily: "Pretendard, -apple-system, BlinkMacSystemFont, sans-serif",
   },
 
   html: {

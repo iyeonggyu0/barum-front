@@ -13,7 +13,7 @@ export const notFoundCss = css({
   overflow: "hidden",
   borderTop: `1px solid ${theme.colors.lightLine}`,
 
-  [mq["mobile"]]: {
+  [mq("mobile")]: {
     height: "100vh",
   },
 });
@@ -99,7 +99,6 @@ export const ghostBtnCss = css({
 
 export const hintCss = css({
   marginTop: "24px",
-  ...theme.fonts.captionLg,
   display: "flex",
   alignItems: "center",
   gap: "8px",

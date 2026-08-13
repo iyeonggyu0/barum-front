@@ -13,8 +13,8 @@ export const background = css({
 export const mobileContainer = (isMobile) =>
   css({
     width: "100%",
-    maxWidth: isMobile ? "1199px" : "412px",
-    height: isMobile ? "100vh" : "865px",
+    maxWidth: isMobile ? "1199px" : "390px",
+    height: isMobile ? "100vh" : "844px",
     maxHeight: "100vh",
     backgroundColor: theme.colors.bg,
     boxShadow: isMobile ? "0 24px 60px rgba(53, 60, 55, .01)" : "",

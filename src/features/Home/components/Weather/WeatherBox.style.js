@@ -45,7 +45,7 @@ export const weatherBoxStyle = css({
       width: "100%",
     },
 
-    "& > div > p:first-child": {
+    "& > div > p:first-of-type": {
       ...theme.fonts.micro,
       opacity: "0.75",
     },

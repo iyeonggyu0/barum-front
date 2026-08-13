@@ -8,6 +8,6 @@ export const getWeather = async (lat, lon) => {
     return weatherMockup;
   }
 
-  const { data } = await api.get(`/weather?lat=${lat}&lon=${lon}`);
-  return data;
+  const res = await api.get(`/weather?lat=${lat}&lon=${lon}`);
+  return res.data;
 };

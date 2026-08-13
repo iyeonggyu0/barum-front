@@ -1,10 +1,13 @@
 import { HomeLayout } from "@/layouts";
 import { getTodayFormatted } from "@/utils/getTodayFormatted";
 import { homePageStyle } from "./Home.style";
-import { WeatherBox } from "@/features/Home/components";
+import { HomeRecordList, WeatherBox } from "@/features/Home/components";
+import { BarButton } from "@/components";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const todayString = getTodayFormatted();
+  const nav = useNavigate();
 
   return (
     <HomeLayout>
@@ -18,6 +21,10 @@ const HomePage = () => {
 
         {/* 날씨 박스 */}
         <WeatherBox />
+        <BarButton clickFun={() => nav("/routine/create/selfie")}>오늘의 루틴 받기</BarButton>
+
+        {/* 기록 */}
+        <HomeRecordList />
       </section>
     </HomeLayout>
   );

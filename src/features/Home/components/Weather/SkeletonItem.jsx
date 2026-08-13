@@ -15,9 +15,9 @@ const WeatherBoxSkeleton = () => {
   });
 
   return (
-    <section css={weatherBoxStyle}>
+    <section css={[{ minHeight: "206.562px" }, weatherBoxStyle]}>
       {/* 상단 영역 스켈레톤 */}
-      <div className="title-box">
+      <div className="title-box" css={{ minHeight: "74.375px" }}>
         <div className="title">
           {/* 지역 기준 라벨 스켈레톤 */}
           <div css={[weatherSkeletonItemStyle, { width: "90px", height: "14px", marginBottom: "12px" }]} />

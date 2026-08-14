@@ -1,28 +1,54 @@
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { recordItemStyle } from "./RecordItem.style";
+import { useNavigate, useLocation } from "react-router-dom"; // useLocation 추가
 
-const RecordItem = ({ data }) => {
-  console.log(data);
+const RecordItem = ({ data, isSkeleton = false }) => {
+  const nav = useNavigate();
+  const location = useLocation(); // 현재 경로 정보를 가져옴
 
-  const formatToMonthDay = (dateString) => {
-    // 예외 처리: 데이터가 없거나 올바르지 않은 형식이면 빈 문자열 반환
-    if (!dateString || typeof dateString !== "string") return "";
+  if (isSkeleton) {
+    return (
+      <div css={recordItemStyle} className="skeleton" aria-hidden="true">
+        <div className="skeleton-thumb" />
+        <div className="text-box">
+          <div className="skeleton-line short" />
+          <div className="skeleton-line" />
+          <div className="skeleton-line" />
+        </div>
+        <div className="skeleton-icon" />
+      </div>
+    );
+  }
 
-    // "-"를 기준으로 문자열을 배열로 나눔 (['2026', '08', '11'])
-    const [, month, day] = dateString.split("-");
+  let y = "";
+  let m = "";
+  let d = "";
 
-    // parseInt(숫자, 10진수)를 사용하여 "08"을 "8"로 변환
-    return `${parseInt(month, 10)}월 ${parseInt(day, 10)}일`;
+  if (data?.date) {
+    const [year, month, day] = data.date.split("-");
+    y = year;
+    m = month;
+    d = day;
+  }
+
+  // 경로에 따른 이동 로직 분리
+  const handleClick = () => {
+    if (location.pathname === "/record") {
+      nav(`/record/result?y=${y}&m=${m}&d=${d}`);
+    } else {
+      // "/" 이거나 그 외의 경우
+      nav(`/routine/result?y=${y}&m=${m}&d=${d}`);
+    }
   };
 
   return (
-    <div css={recordItemStyle}>
+    <div css={recordItemStyle} onClick={handleClick}>
       {data?.thumbnailUrl !== null && <img src={data?.thumbnailUrl} alt="이미지" />}
       {data?.thumbnailUrl === null && <div className="noneImg"></div>}
       <div className="text-box">
         <p className="date">
-          {formatToMonthDay(data?.date)}
+          {m && d ? `${m}월 ${d}일` : ""}
           {data?.hasConflict && <span className="hasConflict">충돌 !</span>}
         </p>
         <p className="data">{data?.weatherSummary}</p>
@@ -32,4 +58,5 @@ const RecordItem = ({ data }) => {
     </div>
   );
 };
+
 export default RecordItem;

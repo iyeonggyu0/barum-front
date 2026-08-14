@@ -1,22 +1,19 @@
 import { HomeLayout } from "@/layouts";
-import { getTodayFormatted } from "@/utils/getTodayFormatted";
-import { useNavigate } from "react-router-dom";
+import { RecordRecordList } from "@/features/Record/components";
 import { recordPageStyle } from "./Record.style";
 
 const Record = () => {
-  const nav = useNavigate();
-
   return (
     <HomeLayout>
       <section css={recordPageStyle}>
         {/* 타이틀 박스 시작 */}
         <div className="title-box record">
           <p className="title">기록</p>
-          <p className="date"></p>
+          <p className="date">최근 15일</p>
         </div>
 
         {/* 기록 */}
-        {/* <HomeRecordList /> */}
+        <RecordRecordList />
       </section>
     </HomeLayout>
   );

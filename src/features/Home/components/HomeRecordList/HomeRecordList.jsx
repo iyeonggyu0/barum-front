@@ -12,7 +12,6 @@ const HomeRecordList = () => {
     // enabled: !!selectedUniv,
   });
 
-  console.log(listData, isListDataLoading, isListDataError);
   const nav = useNavigate();
   return (
     <section css={homeRecordListStyle}>
@@ -23,7 +22,7 @@ const HomeRecordList = () => {
         </span>
       </div>
       {/* 리스트 */}
-      {!isListDataLoading && !isListDataError && listData && <RecordList listData={listData} />}
+      <RecordList listData={listData} isLoading={isListDataLoading} isError={isListDataError} skeletonCount={2} />
     </section>
   );
 };

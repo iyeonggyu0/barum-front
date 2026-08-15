@@ -43,7 +43,7 @@ const WeatherBox = () => {
   }
 
   return (
-    <div>
+    <div css={{ width: "100%" }}>
       {/* 정상처리 */}
       {!isLoading && !locationError && data && (statusCode !== 500 || statusCode !== 502) && (
         <section css={weatherBoxStyle}>

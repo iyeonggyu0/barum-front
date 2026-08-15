@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { HomePage, NotFound, Record, RecordResult, RoutineResult, RoutineSelfie } from "@/pages";
+import { HomePage, NotFound, Record, RecordResult, RoutineLoading, RoutineResult, RoutineSelfie } from "@/pages";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
 
         {/* 셀카 촬영 */}
         <Route path="/routine/create/selfie" element={<RoutineSelfie />} />
-        <Route path="/routine/create/loading" element={<HomePage />} />
+        <Route path="/routine/create/loading" element={<RoutineLoading />} />
         {/* ?error_type로 받아서 분기 */}
         <Route path="/routine/create/error" element={<HomePage />} />
         {/* 결과 페이지 */}

@@ -1,10 +1,12 @@
 import { useRef, useState } from "react";
+import { useSetAtom } from "jotai";
 import { BarButton, LeftButton } from "@/components";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { routineSelfieLayoutStyle, routineSelfieStyle } from "./RoutineSelfie.style";
 import { BasicLayout } from "@/layouts";
 import { Camera } from "@/features/Routine/components";
 import { useRoutineImageUpload } from "@/features/Routine/hooks/useRoutineImageUpload";
+import { createSelfiePreview, routineSelfieAtom } from "@/atom/selfieAtom";
 
 const RoutineSelfie = () => {
   const nav = useNavigate();
@@ -12,16 +14,35 @@ const RoutineSelfie = () => {
   const fileInputRef = useRef(null);
   const cameraCaptureRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
+  const setSelfieAtom = useSetAtom(routineSelfieAtom);
 
   const { mutate: uploadRoutineImage } = useRoutineImageUpload();
 
   const cameraParam = searchParams.get("camera");
+
+  const saveSelfiePreview = (file, sourceType) => {
+    if (!file) {
+      return;
+    }
+
+    const previewUrl = createSelfiePreview(file);
+
+    setSelfieAtom({
+      file,
+      previewUrl,
+      storagePath: "",
+      isUploaded: false,
+      sourceType,
+      uploadedAt: new Date().toISOString(),
+    });
+  };
 
   const handleUploadImage = (file) => {
     if (!file || isUploading) {
       return;
     }
 
+    saveSelfiePreview(file, "upload");
     setIsUploading(true);
 
     uploadRoutineImage(
@@ -30,6 +51,11 @@ const RoutineSelfie = () => {
         onSuccess: ({ storagePath }) => {
           setIsUploading(false);
           const imagePath = storagePath || "mock-user/2026-08-14.jpg";
+          setSelfieAtom((prev) => ({
+            ...prev,
+            storagePath: imagePath,
+            isUploaded: true,
+          }));
           nav(`/routine/create/loading?img_path=${encodeURIComponent(imagePath)}`);
         },
         onError: () => {
@@ -55,6 +81,12 @@ const RoutineSelfie = () => {
     const file = await cameraCaptureRef.current();
     if (file) {
       handleUploadImage(file);
+      const previewUrl = createSelfiePreview(file);
+      setSelfieAtom((prev) => ({
+        ...prev,
+        previewUrl,
+        sourceType: "camera",
+      }));
     }
   };
 

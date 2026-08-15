@@ -13,10 +13,12 @@ import {
   errorTitleStyle,
   errorDescStyle,
 } from "./Camera.style";
+import { useSearchParams } from "react-router-dom";
 
 const Camera = ({ onCapture, captureRef }) => {
   const videoRef = useRef(null);
   const [error, setError] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const captureCurrentFrame = () => {
     const video = videoRef.current;
@@ -76,7 +78,7 @@ const Camera = ({ onCapture, captureRef }) => {
 
     const startCamera = async () => {
       try {
-        stream = await navigator.mediaDevices.getUserMedia({
+        const stream = await navigator.mediaDevices.getUserMedia({
           video: { facingMode: "user" },
           audio: false,
         });
@@ -85,22 +87,18 @@ const Camera = ({ onCapture, captureRef }) => {
           videoRef.current.srcObject = stream;
         }
 
-        if (typeof window !== "undefined") {
-          const url = new URL(window.location.href);
-          if (url.searchParams.has("camera")) {
-            url.searchParams.delete("camera");
-            window.history.replaceState(null, "", url.toString());
-          }
+        // 2. 성공 시 'camera' 파라미터 삭제 (React Router가 감지하도록 변경)
+        if (searchParams.has("camera")) {
+          searchParams.delete("camera");
+          setSearchParams(searchParams, { replace: true });
         }
       } catch (err) {
         console.error("카메라 접근 에러:", err);
         setError("카메라 권한을 허용해주세요.");
 
-        if (typeof window !== "undefined") {
-          const url = new URL(window.location.href);
-          url.searchParams.set("camera", "none");
-          window.history.replaceState(null, "", url.toString());
-        }
+        // 3. 실패 시 'camera=none' 추가 (React Router가 감지하도록 변경)
+        searchParams.set("camera", "none");
+        setSearchParams(searchParams, { replace: true });
       }
     };
 

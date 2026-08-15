@@ -2,7 +2,7 @@ import Header from "./Header/Header";
 import Menu from "./Menu/Menu";
 import { theme } from "@/styles/theme";
 
-const HomeLayout = ({ children }) => {
+const HomeLayout = ({ children, buttons }) => {
   const style = {
     width: "100%",
     height: "100%",
@@ -11,6 +11,11 @@ const HomeLayout = ({ children }) => {
     overflowY: "hidden",
     gap: "18px",
     ...theme.flex.colBetween,
+
+    "& .button-box": {
+      ...theme.flex.colEnd,
+      gap: "12px",
+    },
   };
 
   const divStyle = {
@@ -37,7 +42,10 @@ const HomeLayout = ({ children }) => {
         <Header />
         {children}
       </div>
-      <Menu />
+      <div className="button-box">
+        {buttons}
+        <Menu />
+      </div>
     </main>
   );
 };

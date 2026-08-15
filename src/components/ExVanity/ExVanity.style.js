@@ -8,7 +8,7 @@ export const exVanityStyle = css({
   gap: "8px",
   padding: "7px 12px",
   backgroundColor: theme.colors.greenBadge,
-  color: theme.colors.greenInk,
+  color: `${theme.colors.greenInk} !important`,
   borderRadius: "999px",
 
   "&>div": {

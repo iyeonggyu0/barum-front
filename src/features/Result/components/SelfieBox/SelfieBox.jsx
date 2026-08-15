@@ -44,12 +44,13 @@ const SelfieBox = ({ isLoading, data }) => {
 
   const style = {
     position: "relative",
+    width: "100%",
     "& img": {
       width: "100%",
       height: "190px",
       borderRadius: "30px",
       objectFit: "cover",
-      margin: "0, auto",
+      margin: "0 auto",
     },
     "& .selfie-text": {
       position: "absolute",

@@ -10,6 +10,7 @@ import { theme } from "./styles/theme";
 import { globalStyles } from "./styles/global";
 import "./index.css";
 import { MobileFrame } from "./layouts/index.js";
+import AuthBootstrap from "./components/AuthBootstrap/AuthBootstrap.jsx";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")).render(
         <ThemeProvider theme={theme}>
           <Global styles={globalStyles} />
           <BrowserRouter>
+            <AuthBootstrap />
             {/* 모바일 프레임 */}
             <MobileFrame>
               <App />

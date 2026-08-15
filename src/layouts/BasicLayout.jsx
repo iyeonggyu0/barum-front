@@ -6,7 +6,7 @@ const BasicLayout = ({ children, styleObj }) => {
     height: "100%",
     padding: "26px 20px",
     position: "relative",
-    // overflowY: "hidden",
+    ...theme.flex.colStart,
 
     overflowY: "auto",
     // 파이어폭스 스크롤바 숨김

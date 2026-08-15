@@ -15,7 +15,7 @@ export const useRoutineImageUpload = () => {
       }
 
       if (!file) {
-        throw new Error("업로드할 이미지가 없습니다.");
+        throw { code: "VALIDATION_ERROR", message: "업로드할 이미지가 없습니다." };
       }
 
       const { uploadUrl, bucket, storagePath, expiresIn } = await getRoutineUploadUrl({ purpose });

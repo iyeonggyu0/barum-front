@@ -9,13 +9,15 @@ const HomeLayout = ({ children }) => {
     padding: "26px 20px",
     position: "relative",
     overflowY: "hidden",
-
+    gap: "18px",
     ...theme.flex.colBetween,
   };
 
   const divStyle = {
+    ...theme.flex.colStart,
     width: "100%",
-    height: "calc(100% - 68px)",
+    flex: 1,
+    position: "relative",
     overflowY: "auto",
     // 파이어폭스 스크롤바 숨김
     scrollbarWidth: "none",

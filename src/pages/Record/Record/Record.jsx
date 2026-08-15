@@ -5,11 +5,11 @@ import { recordPageStyle } from "./Record.style";
 const Record = () => {
   return (
     <HomeLayout>
-      <section css={recordPageStyle}>
+      <section css={recordPageStyle} className="test">
         {/* 타이틀 박스 시작 */}
         <div className="title-box record">
           <p className="title">기록</p>
-          <p className="date">최근 15일</p>
+          <p className="date">최대 15일</p>
         </div>
 
         {/* 기록 */}

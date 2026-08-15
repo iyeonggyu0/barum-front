@@ -29,8 +29,8 @@ const RoutineSelfie = () => {
       {
         onSuccess: ({ storagePath }) => {
           setIsUploading(false);
-          const imageUrl = storagePath || "https://placehold.co/600x400";
-          nav(`/routine/create/loading?img_url=${encodeURIComponent(imageUrl)}`);
+          const imagePath = storagePath || "mock-user/2026-08-14.jpg";
+          nav(`/routine/create/loading?img_path=${encodeURIComponent(imagePath)}`);
         },
         onError: () => {
           setIsUploading(false);

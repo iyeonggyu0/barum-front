@@ -6,7 +6,19 @@ const BasicLayout = ({ children, styleObj }) => {
     height: "100%",
     padding: "26px 20px",
     position: "relative",
-    overflowY: "hidden",
+    // overflowY: "hidden",
+
+    overflowY: "auto",
+    // 파이어폭스 스크롤바 숨김
+    scrollbarWidth: "none",
+
+    // IE, Edge 스크롤바 숨김
+    msOverflowStyle: "none",
+
+    // 크롬, 사파리, 오페라 스크롤바 숨김
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
 
     "& header": {
       ...theme.flex.rowBetween,

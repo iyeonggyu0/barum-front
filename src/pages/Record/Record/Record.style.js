@@ -5,6 +5,8 @@ import { theme } from "@/styles/theme";
 export const recordPageStyle = css({
   ...theme.flex.colStart,
   gap: "22px",
+  flex: 1,
+  // height: "calc(100% - 36px - 8px)",
 
   // 타이틀 박스 시작
   "& .title-box.record": {

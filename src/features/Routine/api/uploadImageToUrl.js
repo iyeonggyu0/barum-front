@@ -1,10 +1,15 @@
-export const uploadImageToUrl = async ({ url, file }) => {
-  if (!url) {
+export const uploadImageToUrl = async ({ uploadUrl, file }) => {
+  if (!uploadUrl) {
     throw new Error("업로드 URL이 없습니다.");
   }
 
-  const response = await fetch(url, {
+  if (!file) {
+    throw new Error("업로드할 이미지가 없습니다.");
+  }
+
+  const response = await fetch(uploadUrl, {
     method: "PUT",
+    credentials: "omit",
     headers: {
       "Content-Type": file?.type || "application/octet-stream",
     },

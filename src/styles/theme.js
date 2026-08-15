@@ -129,6 +129,7 @@ export const colors = {
   blueInk: "#3A4A55", // --brm-blue-ink
   blueInk2: "#6B7D89", // --brm-blue-ink-2
   blueInk3: "#7B8D99", // --brm-blue-ink-3
+  blueBg: "rgba(255, 255, 255, .6)",
 
   // 경고 코랄 (성분 충돌·파괴적 액션)
   warnBg: "#FBEDE9", // --brm-warn-bg

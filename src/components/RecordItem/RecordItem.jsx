@@ -1,11 +1,10 @@
 import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { recordItemStyle } from "./RecordItem.style";
-import { useNavigate, useLocation } from "react-router-dom"; // useLocation 추가
+import { useNavigate } from "react-router-dom"; // useLocation 추가
 
 const RecordItem = ({ data, isSkeleton = false }) => {
   const nav = useNavigate();
-  const location = useLocation(); // 현재 경로 정보를 가져옴
 
   if (isSkeleton) {
     return (
@@ -34,12 +33,7 @@ const RecordItem = ({ data, isSkeleton = false }) => {
 
   // 경로에 따른 이동 로직 분리
   const handleClick = () => {
-    if (location.pathname === "/record") {
-      nav(`/record/result?y=${y}&m=${m}&d=${d}`);
-    } else {
-      // "/" 이거나 그 외의 경우
-      nav(`/routine/result?y=${y}&m=${m}&d=${d}`);
-    }
+    nav(`/record/result?y=${y}&m=${m}&d=${d}`);
   };
 
   return (

@@ -8,8 +8,9 @@ export const useRoutineImageUpload = () => {
     mutationFn: async ({ file, purpose = "SELFIE" }) => {
       if (isMockMode()) {
         return {
-          uploadUrl: "https://placehold.co/600x400",
-          storagePath: "https://placehold.co/600x400",
+          bucket: purpose === "OCR" ? "labels" : "selfies",
+          storagePath: "mock-user/2026-08-14.jpg",
+          expiresIn: 300,
         };
       }
 
@@ -17,12 +18,13 @@ export const useRoutineImageUpload = () => {
         throw new Error("업로드할 이미지가 없습니다.");
       }
 
-      const { uploadUrl, storagePath } = await getRoutineUploadUrl({ purpose });
-      await uploadImageToUrl({ url: uploadUrl, file });
+      const { uploadUrl, bucket, storagePath, expiresIn } = await getRoutineUploadUrl({ purpose });
+      await uploadImageToUrl({ uploadUrl, file });
 
       return {
-        uploadUrl,
+        bucket,
         storagePath,
+        expiresIn,
       };
     },
   });

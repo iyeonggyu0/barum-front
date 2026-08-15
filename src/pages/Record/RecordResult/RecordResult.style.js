@@ -22,5 +22,5 @@ export const layoutStyle = css({
 export const recordResultStyle = css({
   ...theme.flex.colStart,
   alignItems: "start",
-  gap: "12px",
+  gap: "20px",
 });

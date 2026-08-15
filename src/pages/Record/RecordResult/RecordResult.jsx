@@ -1,16 +1,33 @@
 import { LeftButton } from "@/components";
-import { BasicLayout, HomeLayout } from "@/layouts";
-import { useSearchParams } from "react-router-dom";
+import { BasicLayout } from "@/layouts";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { layoutStyle, recordResultStyle } from "./RecordResult.style";
-import { ApplyBox, CrashBox, SelfieBox, WeatherBox } from "@/features/Result/components";
+import { ApplyBox, CrashBox, SelfieBox, SkipBox, WeatherBox } from "@/features/Result/components";
 import { useGetRecordDetails } from "@/features/Result/hooks/useGetRecordList";
+import { useDeleteDetails } from "@/features/Result/hooks/useDeleteDetails";
 
 const RecordResult = () => {
   const [searchParams] = useSearchParams();
-
   const y = searchParams.get("y");
   const m = searchParams.get("m");
   const d = searchParams.get("d");
+
+  const nav = useNavigate();
+  const { mutate: deleteRecord } = useDeleteDetails(`${y}-${m}-${d}`, {
+    onSuccess: () => {
+      nav("/record"); // 삭제 후 뒤로가기
+    },
+    onError: (error) => {
+      alert("삭제 중 오류가 발생했습니다.");
+      console.error(error);
+    },
+  });
+
+  const handleDelete = () => {
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      deleteRecord();
+    }
+  };
 
   // 요일
   const weekDays = ["일", "월", "화", "수", "목", "금", "토"];
@@ -30,12 +47,16 @@ const RecordResult = () => {
     <BasicLayout styleObj={layoutStyle}>
       <header>
         <div className="left-box">
-          <LeftButton />
+          <div onClick={() => nav(-1)}>
+            <LeftButton />
+          </div>
           <p>
             {m}월 {d}일 {dayName}요일
           </p>
         </div>
-        <span className="delete">삭제</span>
+        <span className="delete" onClick={handleDelete}>
+          삭제
+        </span>
       </header>
       <section css={recordResultStyle}>
         {/* 셀카 */}
@@ -55,8 +76,11 @@ const RecordResult = () => {
         {/* 충돌 crash */}
         {!isError && <CrashBox isLoading={isLoading} data={data?.conflicts || []} />}
 
-        {/* 뺄것 */}
+        {/* 바를 것 */}
         {!isError && <ApplyBox isLoading={isLoading} data={data?.routine?.apply || []} />}
+
+        {/* 뺄 것 */}
+        {!isError && <SkipBox isLoading={isLoading} data={data?.routine?.skip || []} />}
       </section>
     </BasicLayout>
   );

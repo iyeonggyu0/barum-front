@@ -6,10 +6,15 @@ export const crashBoxStyle = (good) =>
   css({
     ...theme.flex.rowStart,
     backgroundColor: good ? theme.colors.greenSoft : theme.colors.warnBg,
-    marginBottom: "8px",
     padding: "20px 24px",
     gap: "14px",
     borderRadius: "30px",
+
+    marginBottom: "8px",
+
+    "&:last-child": {
+      marginBottom: "0px",
+    },
 
     "& .icon": {
       marginTop: "12px",

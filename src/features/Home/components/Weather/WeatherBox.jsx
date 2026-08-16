@@ -6,8 +6,6 @@ import { requestLocationPermission } from "@/utils/requestLocation";
 const WeatherBox = () => {
   const { data, isLoading, locationError, statusCode, retry, isRefetching } = useGetWeatherQuery();
 
-  console.log(statusCode);
-
   const getPm10Label = () => {
     if (data.pm10 <= 30) return "좋음";
     if (data.pm10 <= 80) return "보통";
@@ -27,9 +25,7 @@ const WeatherBox = () => {
 
   const handleRequestLocation = async () => {
     try {
-      const coords = await requestLocationPermission();
-      console.log("위치 획득 성공! 위도:", coords.lat, "경도:", coords.lon);
-
+      await requestLocationPermission();
       retry();
     } catch (error) {
       alert(error.message);

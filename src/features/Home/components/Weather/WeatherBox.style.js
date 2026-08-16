@@ -64,13 +64,13 @@ export const weatherBoxErrorStyle = css({
   ...theme.flex.rowBetween,
   alignItems: "center",
 
-  "& .text-box > p:nth-child(1)": {
+  "& .text-box > p:nth-of-type(1)": {
     color: theme.colors.ink3,
     marginBottom: "4px",
     ...theme.fonts.caption,
   },
 
-  "& .text-box > p:nth-child(2)": {
+  "& .text-box > p:nth-of-type(2)": {
     color: theme.colors.ink2,
     ...theme.fonts.body_B,
   },

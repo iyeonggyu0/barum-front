@@ -11,7 +11,7 @@ const AuthBootstrap = () => {
 
     getAnonymousToken()
       .then(({ userId }) => {
-        console.log(`✅ 익명 세션 준비 완료: ${userId}`);
+        console.log(`✅ 익명 세션 준비 완료`);
       })
       .catch((err) => {
         console.error("❌ 앱 초기 익명 세션 생성 실패:", err);

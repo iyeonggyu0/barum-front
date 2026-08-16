@@ -53,6 +53,53 @@ const RoutineLoading = () => {
   const isStreamStartedRef = useRef(false);
 
   useEffect(() => {
+    // 1. 에러가 없거나 isError가 false인 경우 무시
+    if (!isError || !error) return;
+
+    // 2. HTTP 오류 또는 스트림 내 error 이벤트로 들어온 code 추출
+    // (서버 응답 구조에 따라 error.code 또는 error.response?.data?.code 형태일 수 있습니다)
+    const errorCode = error.code;
+
+    switch (errorCode) {
+      case "EMPTY_VANITY":
+        // 보유 제품 0개
+        console.warn("화장대를 채워주세요:", error.message);
+        navigate("/routine/create/error?type=EMPTY_VANITY");
+        break;
+
+      case "AI_TIMEOUT":
+        // 25초 내 루틴 생성 실패
+        console.error("AI 응답 초과:", error.message);
+        navigate("/routine/create/error");
+        break;
+
+      case "EXTERNAL_API_ERROR":
+        // 그 외 AI 서버 오류
+        console.error("외부 API 오류:", error.message);
+        navigate("/routine/create/error?type=EXTERNAL_API_ERROR");
+        break;
+
+      case "UNAUTHORIZED": // HTTP 401
+        // 인증 토큰 없음 / 형식 오류
+        console.warn("인증 만료 또는 유효하지 않음");
+        break;
+
+      case "VALIDATION_ERROR": // HTTP 400
+        console.error("요청 데이터 형식 오류:", error.message);
+        break;
+
+      default:
+        // 정의되지 않은 그 외 에러 처리
+        console.error("알 수 없는 에러 발생:", error);
+        break;
+    }
+  }, [error, isError]);
+
+  const stage1State = stage1 ? "end" : "ing";
+  const stage2State = !stage1 ? "wait" : stage2 ? "end" : "ing";
+  const stage3State = !stage2 ? "wait" : progress >= 100 || stage3 ? (progress >= 100 ? "end" : "ing") : "wait";
+
+  useEffect(() => {
     let animationFrameId;
     const startValue = displayedProgressRef.current;
     const endValue = progress;
@@ -164,35 +211,35 @@ const RoutineLoading = () => {
           <p className="sub">
             {smoothProgress === 100
               ? "결과 화면 구성 중"
-              : smoothProgress >= 89
+              : stage3
                 ? "거의 다 됐어요"
-                : smoothProgress >= 55
+                : stage2
                   ? "화장대를 둘러보고 있어요"
-                  : smoothProgress >= 25
+                  : stage1
                     ? "날씨를 반영 중이에요"
                     : "피부를 진단하고 있어요"}
           </p>
         </div>
         <div className="item-box">
           {/* 1단계: 피부 상태 확인 중 */}
-          <div className="item" css={routineItem(smoothProgress < 25 ? "ing" : "end")}>
-            <span className="order">{smoothProgress < 25 ? "1" : <FontAwesomeIcon icon={faCheck} />}</span>
+          <div className="item" css={routineItem(stage1State)}>
+            <span className="order">{stage1State === "end" ? <FontAwesomeIcon icon={faCheck} /> : "1"}</span>
             <p className="name">피부 상태 확인 중</p>
-            <p className="state">{smoothProgress < 25 ? "진행 중" : "확인 완료"}</p>
+            <p className="state">{stage1State === "end" ? "확인 완료" : "진행 중"}</p>
           </div>
 
           {/* 2단계: 오늘 날씨 반영 중 */}
-          <div className="item" css={routineItem(smoothProgress < 25 ? "wait" : smoothProgress < 55 ? "ing" : "end")}>
-            <span className="order">{smoothProgress < 55 ? "2" : <FontAwesomeIcon icon={faCheck} />}</span>
+          <div className="item" css={routineItem(stage2State)}>
+            <span className="order">{stage2State === "end" ? <FontAwesomeIcon icon={faCheck} /> : "2"}</span>
             <p className="name">오늘 날씨 반영 중</p>
-            <p className="state">{smoothProgress < 25 ? "대기 중" : smoothProgress < 55 ? "진행 중" : "반영 완료"}</p>
+            <p className="state">{stage2State === "wait" ? "대기 중" : stage2State === "ing" ? "진행 중" : "반영 완료"}</p>
           </div>
 
           {/* 3단계: 화장대에서 고르는 중 */}
-          <div className="item" css={routineItem(smoothProgress < 55 ? "wait" : smoothProgress < 100 ? "ing" : "end")}>
-            <span className="order">{smoothProgress < 100 ? "3" : <FontAwesomeIcon icon={faCheck} />}</span>
+          <div className="item" css={routineItem(stage3State)}>
+            <span className="order">{stage3State === "end" ? <FontAwesomeIcon icon={faCheck} /> : "3"}</span>
             <p className="name">화장대에서 고르는 중</p>
-            <p className="state">{smoothProgress < 55 ? "대기 중" : smoothProgress < 100 ? "진행 중" : "선택 완료"}</p>
+            <p className="state">{stage3State === "wait" ? "대기 중" : stage3State === "ing" ? "진행 중" : "선택 완료"}</p>
           </div>
         </div>
         <p className="caption">사진은 분석 후 나만 볼 수 있게 보관돼요</p>

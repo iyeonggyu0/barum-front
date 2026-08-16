@@ -1,7 +1,8 @@
+import { BarButton } from "../../../../components";
+import { useNavigate } from "react-router-dom";
 import { theme } from "@/styles/theme";
 import { css } from "@emotion/react";
-import { BarButton, RecordItem } from "..";
-import { useNavigate } from "react-router-dom";
+import { RecordItem } from "..";
 
 const noneDataStyle = css({
   height: "100%",

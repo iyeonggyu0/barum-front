@@ -1,11 +1,11 @@
 import { HomeLayout } from "@/layouts";
 import { RecordRecordList } from "@/features/Record/components";
-import { recordPageStyle } from "./Record.style";
+import { recordPageStyle } from "./RecordList.style";
 
-const Record = () => {
+const RecordList = () => {
   return (
     <HomeLayout>
-      <section css={recordPageStyle} className="test">
+      <section css={recordPageStyle}>
         {/* 타이틀 박스 시작 */}
         <div className="title-box record">
           <p className="title">기록</p>
@@ -18,4 +18,4 @@ const Record = () => {
     </HomeLayout>
   );
 };
-export default Record;
+export default RecordList;

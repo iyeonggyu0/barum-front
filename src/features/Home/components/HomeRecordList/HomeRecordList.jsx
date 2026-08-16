@@ -1,7 +1,7 @@
-import { RecordList } from "@/components";
 import { homeRecordListStyle } from "./HomeRecordList.stlye";
 import { useNavigate } from "react-router-dom";
 import { useGetHomeRecord } from "../../hooks/useGetHomeRecord";
+import { RecordList } from "@/features/Record/components";
 
 const HomeRecordList = () => {
   const {

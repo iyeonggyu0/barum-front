@@ -1,6 +1,6 @@
-import { RecordList } from "@/components";
 import { recordRecordListStyle } from "./RecordRecordList.style";
 import { useGetRecordList } from "../../hooks/useGetRecordList";
+import { RecordList } from "..";
 
 const RecordRecordList = () => {
   const { data: listData, isLoading: isListDataLoading, isError: isListDataError } = useGetRecordList();

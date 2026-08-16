@@ -8,6 +8,28 @@ import { getCurrentLocation } from "@/utils/geolocation";
 
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
+const parseSseChunk = (chunk) => {
+  const eventMatch = chunk.match(/^event:\s*(.+)$/m);
+  const dataMatch = chunk.match(/^data:\s*(.+)$/m);
+
+  if (!eventMatch || !dataMatch) {
+    return null;
+  }
+
+  try {
+    return {
+      event: eventMatch[1].trim(),
+      data: JSON.parse(dataMatch[1]),
+    };
+  } catch {
+    return null;
+  }
+};
+
+const isUnauthorizedError = (error) => {
+  return error?.code === "UNAUTHORIZED" || error?.status === 401;
+};
+
 export const useRoutineStream = () => {
   const [progress, setProgress] = useState(0);
   const [stage1, setStage1] = useState(false);
@@ -31,6 +53,29 @@ export const useRoutineStream = () => {
 
   // 인증 훅 가져오기
   const { getAuthToken } = useAnonymousAuth();
+
+  const consumeRoutineStream = async ({ stream, userId }) => {
+    const reader = stream.pipeThrough(new TextDecoderStream()).getReader();
+    let buffer = "";
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += value;
+      const chunks = buffer.split("\n\n");
+      buffer = chunks.pop() || "";
+
+      for (const chunk of chunks) {
+        const parsed = parseSseChunk(chunk);
+        if (!parsed) {
+          continue;
+        }
+
+        handleEvent(parsed.event, parsed.data, userId);
+      }
+    }
+  };
 
   // 매개변수를 selfiePath 하나로 축소! (나머지는 훅 내부에서 알아서 가져옴)
   const startStream = async (selfiePath) => {
@@ -64,7 +109,7 @@ export const useRoutineStream = () => {
 
     try {
       // 1. 토큰 및 유저 ID 발급
-      const { token, userId } = await getAuthToken();
+      let { token, userId } = await getAuthToken();
 
       // 2. GPS 위치 확인 (실패 시 서울시청 기본값 사용)
       let lat = 37.5665;
@@ -80,33 +125,21 @@ export const useRoutineStream = () => {
 
       console.log(`▶ 스트림 시작 요청 (이미지: ${actualSelfiePath}, 유저: ${userId})`);
 
-      // 3. 실제 API 호출
-      const stream = await fetchRoutineStream(actualSelfiePath, lat, lon, token);
-      const reader = stream.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split("\n");
-
-        let eventName = "";
-        for (const line of lines) {
-          if (line.startsWith("event:")) {
-            eventName = line.replace("event:", "").trim();
-          } else if (line.startsWith("data:")) {
-            const dataStr = line.replace("data:", "").trim();
-            if (dataStr) {
-              try {
-                handleEvent(eventName, JSON.parse(dataStr), userId);
-              } catch (e) {
-                console.error("JSON Parse Error:", e);
-              }
-            }
-          }
+      // 3. 실제 API 호출 (401이면 익명 세션 재발급 후 1회 재시도)
+      try {
+        const stream = await fetchRoutineStream(actualSelfiePath, lat, lon, token);
+        await consumeRoutineStream({ stream, userId });
+      } catch (firstError) {
+        if (!isUnauthorizedError(firstError)) {
+          throw firstError;
         }
+
+        const refreshed = await getAuthToken();
+        token = refreshed.token;
+        userId = refreshed.userId;
+
+        const retriedStream = await fetchRoutineStream(actualSelfiePath, lat, lon, token);
+        await consumeRoutineStream({ stream: retriedStream, userId });
       }
     } catch (err) {
       handleError(err);
@@ -130,23 +163,23 @@ export const useRoutineStream = () => {
         }
         break;
       case "context":
-        if (data.weather) draft.weather = data.weather;
-        if (data.skin) draft.skin = data.skin;
+        if (data.weather != null) draft.weather = data.weather;
+        draft.skin = data.skin ?? null;
         break;
       case "conflict":
-        if (data.pairs) draft.conflicts = data.pairs;
+        draft.conflicts = Array.isArray(data.pairs) ? data.pairs : [];
         break;
       case "item":
         if (data.type === "APPLY") {
-          draft.routine.apply.push({ order: data.order, name: data.name, reason: data.reason });
+          draft.routine.apply.push({ order: data.order, productId: data.productId, name: data.name, reason: data.reason });
         } else if (data.type === "SKIP") {
-          draft.routine.skip.push({ name: data.name, reason: data.reason });
+          draft.routine.skip.push({ productId: data.productId, name: data.name, reason: data.reason });
         }
         break;
       case "done":
         setProgress(100);
         setIsProgressing(false);
-        buildFinalData(userId);
+        buildFinalData();
         break;
       case "error":
         handleError(data);
@@ -164,9 +197,9 @@ export const useRoutineStream = () => {
     setIsProgressing(false);
   };
 
-  const buildFinalData = (userId) => {
+  const buildFinalData = () => {
     const draft = draftRef.current;
-    const formattedSelfiePath = draft.selfiePath ? `${userId}/${draft.selfiePath.split("/").pop()}` : null;
+    const formattedSelfiePath = draft.selfiePath || null;
 
     const finalA = {
       date: draft.date,

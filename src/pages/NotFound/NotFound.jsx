@@ -5,7 +5,7 @@ const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <main css={notFoundCss}>
+    <div css={notFoundCss}>
       <section css={cardCss} aria-labelledby="notfound-title">
         <div css={codeCss}>404</div>
         <h1 css={titleCss} id="notfound-title">
@@ -23,10 +23,12 @@ const NotFound = () => {
         </div>
         <div css={hintCss}>
           <span className="dot" aria-hidden="true" />
-          메인 페이지에서 계속 탐색할 수 있어요.
+          메인 페이지에서
+          <br />
+          계속 탐색할 수 있어요.
         </div>
       </section>
-    </main>
+    </div>
   );
 };
 

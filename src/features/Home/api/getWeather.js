@@ -1,10 +1,10 @@
 import api from "@/api";
-import { weatherMockup } from "@/mockup/weatherMockup";
 import { isMockMode } from "@/utils/isMockMode";
 
 export const getWeather = async (lat, lon) => {
   const isMock = isMockMode();
   if (isMock) {
+    const { weatherMockup } = await import("@/mockup/weatherMockup");
     return weatherMockup;
   }
 

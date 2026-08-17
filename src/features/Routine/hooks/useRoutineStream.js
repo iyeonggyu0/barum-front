@@ -2,7 +2,6 @@
 import { isMockMode } from "@/utils/isMockMode";
 import { useRef, useState } from "react";
 import { fetchRoutineStream } from "../api/routineAi";
-import { recordDetailsMockup } from "@/mockup/recordDetailsMockup";
 import { useAnonymousAuth } from "@/hooks/useAnonymousAuth";
 import { getCurrentLocation } from "@/utils/geolocation";
 
@@ -103,7 +102,8 @@ export const useRoutineStream = () => {
 
     if (isMock) {
       console.log("🧪 목업 모드: Supabase 인증을 건너뛰고 목업 시퀀스를 실행합니다.");
-      runMockSequence("mock-user-123", actualSelfiePath);
+      const { recordDetailsMockup } = await import("@/mockup/recordDetailsMockup");
+      runMockSequence("mock-user-123", actualSelfiePath, recordDetailsMockup);
       return;
     }
 
@@ -223,7 +223,7 @@ export const useRoutineStream = () => {
     setDataB(finalB);
   };
 
-  const runMockSequence = (userId, actualSelfiePath) => {
+  const runMockSequence = (userId, actualSelfiePath, recordDetailsMockup) => {
     setTimeout(() => {
       setStage1(true);
       setProgress(getRandomInt(29, 39));

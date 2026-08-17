@@ -11,3 +11,4 @@ export { default as RecordList } from "./Record/RecordList/RecordList.jsx";
 export { default as RecordResult } from "./Record/RecordResult/RecordResult.jsx";
 
 export { default as MakeupList } from "./Makeup/MakeupList/MakeupList.jsx";
+export { default as MakeupSearch } from "./Makeup/MakeupSearch/MakeupSearch.jsx";

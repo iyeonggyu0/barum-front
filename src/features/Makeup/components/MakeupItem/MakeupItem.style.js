@@ -9,6 +9,15 @@ export const makeupItemStyle = css({
   borderRadius: "26px",
   gap: "14px",
   alignItems: "center",
+  position: "relative",
+
+  "& .ex": {
+    position: "absolute",
+    ...theme.fonts.nano,
+    color: theme.colors.green,
+    right: "14px",
+    top: "14px",
+  },
 
   "& > img": {
     width: "60px", // 또는 44px (기존 CSS 참고)

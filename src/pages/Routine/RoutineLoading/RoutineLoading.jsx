@@ -1,4 +1,3 @@
-import { ExVanity } from "@/components";
 import { useRoutineStream } from "@/features/Routine/hooks/useRoutineStream";
 import { BasicLayout } from "@/layouts";
 import { useEffect, useRef, useState } from "react";
@@ -179,9 +178,6 @@ const RoutineLoading = () => {
   // UI 렌더링을 최소화하여 콘솔 확인 목적 달성
   return (
     <BasicLayout styleObj={routineLoadingLayoutStyle}>
-      <header>
-        <ExVanity />
-      </header>
       <section css={routineLoadingStyle}>
         <div className="percentage">
           <div css={loaderWrapperStyle}>

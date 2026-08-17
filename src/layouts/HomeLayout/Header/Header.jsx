@@ -1,4 +1,4 @@
-import { ExVanity, MenuButton } from "@/components";
+import { LeftButton, MenuButton } from "@/components";
 import { theme } from "@/styles/theme";
 
 const Header = () => {
@@ -10,7 +10,7 @@ const Header = () => {
 
   return (
     <header css={style}>
-      <ExVanity />
+      <LeftButton />
       <MenuButton />
     </header>
   );

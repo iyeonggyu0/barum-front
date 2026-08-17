@@ -8,6 +8,7 @@ const MakeupList = () => {
   const { data: listData, isLoading: isListDataLoading, isError: isListDataError } = useGetMakeupList();
 
   const nav = useNavigate();
+
   return (
     <HomeLayout>
       <section css={makeupPageStyle}>

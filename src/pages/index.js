@@ -12,3 +12,6 @@ export { default as RecordResult } from "./Record/RecordResult/RecordResult.jsx"
 
 export { default as MakeupList } from "./Makeup/MakeupList/MakeupList.jsx";
 export { default as MakeupSearch } from "./Makeup/MakeupSearch/MakeupSearch.jsx";
+export { default as MakeupCamera } from "./Makeup/MakeupCamera/MakeupCamera.jsx";
+export { default as MakeupCameraResult } from "./Makeup/MakeupCameraResult/MakeupCameraResult.jsx";
+export { default as MakeupCameraError } from "./Makeup/MakeupCameraError/MakeupCameraError.jsx";

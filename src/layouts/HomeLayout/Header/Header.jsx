@@ -1,5 +1,6 @@
 import { LeftButton, MenuButton } from "@/components";
 import { theme } from "@/styles/theme";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const style = {
@@ -8,9 +9,13 @@ const Header = () => {
     marginBottom: "26px",
   };
 
+  const nav = useNavigate();
+
   return (
     <header css={style}>
-      <LeftButton />
+      <span onClick={() => nav(-1)}>
+        <LeftButton />
+      </span>
       <MenuButton />
     </header>
   );

@@ -74,7 +74,7 @@ const MakeupSearch = () => {
         {data?.items.length > 0 && selectList.length === 0 && <BarButton colorTheme="none">화장품을 선택하세요</BarButton>}
 
         {data?.items.length === 0 && (
-          <div onClick={nav("/makeup/create/camera")}>
+          <div onClick={() => nav("/makeup/create/camera")}>
             <BarButton>전성분표 사진으로 등록</BarButton>
           </div>
         )}

@@ -1,5 +1,19 @@
 import { Route, Routes } from "react-router-dom";
-import { HomePage, MakeupList, MakeupSearch, NotFound, RecordList, RecordResult, RoutineError, RoutineLoading, RoutineResult, RoutineSelfie } from "@/pages";
+import {
+  HomePage,
+  MakeupCamera,
+  MakeupCameraError,
+  MakeupCameraResult,
+  MakeupList,
+  MakeupSearch,
+  NotFound,
+  RecordList,
+  RecordResult,
+  RoutineError,
+  RoutineLoading,
+  RoutineResult,
+  RoutineSelfie,
+} from "@/pages";
 import MakeupSelect from "./pages/Makeup/MakeupSelect/MakeupSelect";
 
 function App() {
@@ -24,11 +38,11 @@ function App() {
         {/* 검색 */}
         <Route path="/makeup/create/search" element={<MakeupSearch />} />
         {/* 카메라 */}
-        <Route path="/makeup/create/camera" element={<MakeupList />} />
+        <Route path="/makeup/create/camera" element={<MakeupCamera />} />
         {/* 결과확인 */}
-        <Route path="/makeup/create/camera/result" element={<MakeupList />} />
+        <Route path="/makeup/create/camera/result" element={<MakeupCameraResult />} />
         {/* 에러 */}
-        <Route path="/makeup/create/error" element={<MakeupList />} />
+        <Route path="/makeup/create/error" element={<MakeupCameraError />} />
 
         {/* 기록 */}
         <Route path="/record" element={<RecordList />} />

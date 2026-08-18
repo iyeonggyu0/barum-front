@@ -1,5 +1,5 @@
 import { BarButton } from "../../../../components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "@/styles/theme";
 import { css } from "@emotion/react";
 import { RecordItem } from "..";
@@ -60,6 +60,10 @@ const noneDataStyle = css({
 });
 
 const RecordList = ({ listData = [], isLoading = false, isError = false, skeletonCount = 2 }) => {
+  const { pathname } = useLocation();
+
+  const isMatch = pathname !== "/";
+
   const hasData = Array.isArray(listData) && listData.length > 0;
 
   const nav = useNavigate();
@@ -72,18 +76,22 @@ const RecordList = ({ listData = [], isLoading = false, isError = false, skeleto
       {/* 2. 로딩이 끝났는데 데이터가 없을 때 (빈 화면) */}
       {!isLoading && !isError && !hasData && (
         <div css={noneDataStyle}>
-          <div className="icon">
-            <div className="bar_1"></div>
-            <div className="bar_2"></div>
-            <div className="bar_3"></div>
-          </div>
+          {isMatch && (
+            <div className="icon">
+              <div className="bar_1"></div>
+              <div className="bar_2"></div>
+              <div className="bar_3"></div>
+            </div>
+          )}
           <div>
             <p className="title">첫 기록을 남겨보세요</p>
             <p className="sub">오늘의 루틴을 받고 저장하면 여기에 날짜별로 쌓여요</p>
           </div>
-          <div className="button-box">
-            <BarButton clickFun={() => nav("/routine/create/selfie")}>오늘의 루틴 받기</BarButton>
-          </div>
+          {isMatch && (
+            <div className="button-box">
+              <BarButton clickFun={() => nav("/routine/create/selfie")}>오늘의 루틴 받기</BarButton>
+            </div>
+          )}
         </div>
       )}
 

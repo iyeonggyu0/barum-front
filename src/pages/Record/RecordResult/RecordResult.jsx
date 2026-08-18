@@ -1,5 +1,6 @@
 import { LeftButton } from "@/components";
 import { BasicLayout } from "@/layouts";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { layoutStyle, recordResultStyle } from "./RecordResult.style";
 import { ApplyBox, CrashBox, SelfieBox, SkipBox, WeatherBox } from "@/features/Result/components";
@@ -39,9 +40,24 @@ const RecordResult = () => {
 
   const formattedDate = isDateValid ? `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}` : null;
 
-  const { data, isLoading, isError } = useGetRecordDetails(formattedDate, {
+  const { data, isLoading, isError, error } = useGetRecordDetails(formattedDate, {
     enabled: !!isDateValid,
   });
+
+  useEffect(() => {
+    if (!isError || !error) return;
+
+    const errorCode = error?.code || error?.response?.data?.code || "EXTERNAL_API_ERROR";
+
+    if (errorCode === "BAD_REQUEST") {
+      alert("기록 데이터를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.");
+      return;
+    }
+
+    if (errorCode === "INVALID_SELFIE_PATH") {
+      alert("셀카 경로가 올바르지 않아 이미지를 표시할 수 없어요.");
+    }
+  }, [isError, error]);
 
   return (
     <BasicLayout styleObj={layoutStyle}>

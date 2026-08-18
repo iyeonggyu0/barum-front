@@ -40,6 +40,12 @@ const RoutineResult = () => {
           case "VALIDATION_ERROR":
             alert(message);
             break;
+          case "INVALID_SELFIE_PATH":
+            alert("셀카 경로가 올바르지 않아 저장할 수 없어요. 다시 촬영해 주세요.");
+            break;
+          case "BAD_REQUEST":
+            alert("기록 저장 응답이 올바르지 않아 저장에 실패했어요. 잠시 후 다시 시도해 주세요.");
+            break;
           case "PRODUCT_NOT_FOUND":
             alert("제품을 찾을 수 없습니다. 목록을 새로고침해 주세요.");
             break;

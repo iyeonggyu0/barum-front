@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getAnonymousToken } from "@/utils/supabase";
-import { isMockMode } from "@/utils/isMockMode";
 
 // 환경 변수 기반 URL과 기본 API 접두사(/api/v1) 결합
 const baseURL = `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
@@ -11,7 +10,7 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use(async (config) => {
-  if (isMockMode()) {
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
     return config;
   }
 

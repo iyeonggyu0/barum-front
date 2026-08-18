@@ -1,8 +1,7 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 export const recognizeMakeupOcr = async ({ storagePath, alias = "직구 세럼" }) => {
-  if (isMockMode()) {
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
     await new Promise((resolve) => setTimeout(resolve, 800));
     return {
       alias,

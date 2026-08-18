@@ -1,5 +1,4 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 const getTodayKstDate = () => {
   const now = new Date();
@@ -52,7 +51,7 @@ const buildSavePayload = (payload) => {
 };
 
 export const saveRoutineRecord = async ({ payload }) => {
-  if (isMockMode()) {
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
     await new Promise((resolve) => setTimeout(resolve, 500));
     return { date: payload?.date || getTodayKstDate() };
   }

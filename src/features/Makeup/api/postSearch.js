@@ -1,10 +1,7 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 export const postSearch = async (catalogIds) => {
-  const isMock = isMockMode();
-
-  if (isMock) {
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
     // 테스트용 1초 딜레이 및 Mock 데이터 반환
     await new Promise((resolve) => setTimeout(resolve, 1000));
     return {

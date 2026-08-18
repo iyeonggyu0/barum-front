@@ -1,12 +1,10 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 export const getSearchList = async (name, page = 0, category = "") => {
-  const isMock = isMockMode();
   console.log("실행");
 
-  if (isMock) {
-    const { makeupSearchMockup } = await import("@/mockup/makeupSearchMockup");
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
+    const { makeupSearchMockup } = await import("@/mockup/makeupSearchMockup.js");
     // 스켈레톤 UI 테스트를 위한 2초 딜레이
     await new Promise((resolve) => setTimeout(resolve, 2000));
 

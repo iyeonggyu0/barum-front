@@ -1,5 +1,5 @@
 // src/features/Routine/hooks/useRoutineStream.js
-import { isMockMode } from "@/utils/isMockMode";
+
 import { useRef, useState } from "react";
 import { fetchRoutineStream } from "../api/routineAi";
 import { useAnonymousAuth } from "@/hooks/useAnonymousAuth";
@@ -78,7 +78,6 @@ export const useRoutineStream = () => {
 
   // 매개변수를 selfiePath 하나로 축소! (나머지는 훅 내부에서 알아서 가져옴)
   const startStream = async (selfiePath) => {
-    const isMock = isMockMode();
     const actualSelfiePath = !selfiePath || selfiePath === "none" ? null : selfiePath;
 
     setIsProgressing(true);
@@ -100,9 +99,9 @@ export const useRoutineStream = () => {
       routine: { apply: [], skip: [] },
     };
 
-    if (isMock) {
+    if (import.meta.env.VITE_USE_MOCKUP === "true") {
       console.log("🧪 목업 모드: Supabase 인증을 건너뛰고 목업 시퀀스를 실행합니다.");
-      const { recordDetailsMockup } = await import("@/mockup/recordDetailsMockup");
+      const { recordDetailsMockup } = await import("@/mockup/recordDetailsMockup.js");
       runMockSequence("mock-user-123", actualSelfiePath, recordDetailsMockup);
       return;
     }

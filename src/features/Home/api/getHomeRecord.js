@@ -1,10 +1,8 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 export const getHomeRecord = async () => {
-  const isMock = isMockMode();
-  if (isMock) {
-    const { homeRecordMockup } = await import("@/mockup/homeRecordMockup");
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
+    const { homeRecordMockup } = await import("@/mockup/homeRecordMockup.js");
     return homeRecordMockup;
   }
 

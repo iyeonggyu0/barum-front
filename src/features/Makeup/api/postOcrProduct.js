@@ -1,8 +1,7 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 export const postOcrProduct = async (ocrProduct) => {
-  if (isMockMode()) {
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     return {

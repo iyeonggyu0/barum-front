@@ -1,5 +1,4 @@
 import api from "@/api";
-import { isMockMode } from "@/utils/isMockMode";
 
 const normalizeRecordDetail = (record) => {
   if (!record || typeof record !== "object") {
@@ -24,9 +23,8 @@ const normalizeRecordDetail = (record) => {
 };
 
 export const getRecordDetails = async (date) => {
-  const isMock = isMockMode();
-  if (isMock) {
-    const { recordDetailsMockup } = await import("@/mockup/recordDetailsMockup");
+  if (import.meta.env.VITE_USE_MOCKUP === "true") {
+    const { recordDetailsMockup } = await import("@/mockup/recordDetailsMockup.js");
     await new Promise((resolve) => setTimeout(resolve, 3000));
     return recordDetailsMockup;
   }

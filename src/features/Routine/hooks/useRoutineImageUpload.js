@@ -1,12 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
-import { isMockMode } from "@/utils/isMockMode";
+
 import { getRoutineUploadUrl } from "../api/getUploadUrl";
 import { uploadImageToUrl } from "../api/uploadImageToUrl";
 
 export const useRoutineImageUpload = () => {
   return useMutation({
     mutationFn: async ({ file, purpose = "SELFIE" }) => {
-      if (isMockMode()) {
+      if (import.meta.env.VITE_USE_MOCKUP === "true") {
         return {
           bucket: purpose === "OCR" ? "labels" : "selfies",
           storagePath: "mock-user/2026-08-14.jpg",

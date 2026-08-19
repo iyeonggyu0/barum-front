@@ -30,10 +30,7 @@ const MakeupCamera = () => {
   const isAliasEmpty = !trimmedAlias;
 
   useEffect(() => {
-    if (!isUploading) {
-      setLoadingProgress(18);
-      return;
-    }
+    if (!isUploading) return;
 
     const timer = setInterval(() => {
       setLoadingProgress((prev) => {
@@ -57,6 +54,7 @@ const MakeupCamera = () => {
     }
 
     setIsUploading(true);
+    setLoadingProgress(18);
 
     uploadAndRecognize(
       { file, alias },
@@ -68,6 +66,7 @@ const MakeupCamera = () => {
         },
         onError: (error) => {
           setIsUploading(false);
+          setLoadingProgress(18);
 
           if (error?.code === "OCR_NO_TEXT") {
             nav("/makeup/create/error?type=OCR_NO_TEXT");
@@ -138,7 +137,7 @@ const MakeupCamera = () => {
             <section className="camera">
               <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileSelect} />
 
-              <MakeupCameraView captureRef={cameraCaptureRef} onCapture={handleOcrUpload} />
+              <MakeupCameraView captureRef={cameraCaptureRef} />
             </section>
             <div className="caption">
               <p className="title">이렇게 찍으면 좋아요!</p>

@@ -20,6 +20,8 @@ const MakeupSearchList = ({ data, selectList = [], page = 0, setPage = {}, setSe
   const isFirstPage = page === 0;
   const isLastPage = page + 1 >= totalPages;
 
+  console.log(data);
+
   return (
     <section css={{ width: "100%", flex: 1, minHeight: 0, ...theme.flex.colBetween }} className="MakeupSearchList">
       <div css={{ ...theme.flex.rowBetween, ...theme.fonts.caption, color: theme.colors.ink2, marginBottom: "4px" }}>
@@ -78,7 +80,7 @@ const MakeupSearchList = ({ data, selectList = [], page = 0, setPage = {}, setSe
               }}
               key={item.catalogId}
               css={makeupSearchListItem(selectList.includes(item.catalogId))}>
-              {data?.imageUrl ? <img src={data?.imageUrl} alt="이미지" /> : <div className="noneImg"></div>}
+              {item?.imageUrl ? <img src={item?.imageUrl} alt="이미지" /> : <div className="noneImg"></div>}
 
               <div className="text-box">
                 <p className="type">

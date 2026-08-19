@@ -19,6 +19,23 @@ export const makeupItemStyle = css({
     top: "14px",
   },
 
+  "& .ex.delete": {
+    position: "absolute",
+    color: theme.colors.warn,
+    right: "14px",
+    top: "14px",
+    border: "none",
+    background: "transparent",
+    padding: 0,
+    cursor: "pointer",
+    lineHeight: 1,
+  },
+
+  "& .ex.delete:disabled": {
+    opacity: 0.45,
+    cursor: "not-allowed",
+  },
+
   "& > img": {
     width: "60px", // 또는 44px (기존 CSS 참고)
     height: "60px",

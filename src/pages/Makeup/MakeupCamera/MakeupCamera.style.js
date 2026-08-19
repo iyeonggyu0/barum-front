@@ -21,7 +21,8 @@ export const makeupCameraStyle = css({
   gap: "12px",
 
   "& > .camera": {
-    height: "430px",
+    height: "60%",
+    maxHeight: "430px",
     borderRadius: "30px",
   },
 

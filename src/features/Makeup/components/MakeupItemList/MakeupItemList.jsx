@@ -4,7 +4,15 @@ import { noneDataStyle } from "./MakeupItemList.style";
 import { theme } from "@/styles/theme";
 import { useNavigate } from "react-router-dom";
 
-const MakeupItemList = ({ listData = [], isLoading = false, isError = false, skeletonCount = 5 }) => {
+const MakeupItemList = ({
+  listData = [],
+  isLoading = false,
+  isError = false,
+  skeletonCount = 5,
+  deleteMode = false,
+  onDeleteItem,
+  deletingProductId = null,
+}) => {
   const hasData = Array.isArray(listData) && listData.length > 0;
   const nav = useNavigate();
   return (
@@ -35,7 +43,17 @@ const MakeupItemList = ({ listData = [], isLoading = false, isError = false, ske
       )}
 
       {/* 3. 로딩이 끝나고 데이터가 있을 때 */}
-      {!isLoading && hasData && listData.map((item, idx) => <MakeupItem key={`${item?.date || "record"}-${idx}`} data={item} />)}
+      {!isLoading &&
+        hasData &&
+        listData.map((item, idx) => (
+          <MakeupItem
+            deleteMode={deleteMode}
+            key={`${item?.productId || "record"}-${idx}`}
+            data={item}
+            onDelete={onDeleteItem}
+            isDeleting={deletingProductId === item?.productId}
+          />
+        ))}
     </section>
   );
 };

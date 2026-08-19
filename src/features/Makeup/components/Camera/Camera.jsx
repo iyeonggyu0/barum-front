@@ -15,7 +15,7 @@ import {
 } from "./Camera.style";
 import { useSearchParams } from "react-router-dom";
 
-const Camera = ({ onCapture, captureRef }) => {
+const Camera = ({ captureRef }) => {
   const videoRef = useRef(null);
   const [error, setError] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -48,10 +48,6 @@ const Camera = ({ onCapture, captureRef }) => {
           const file = new File([blob], `ocr-${Date.now()}.jpg`, {
             type: "image/jpeg",
           });
-
-          if (typeof onCapture === "function") {
-            onCapture(file);
-          }
 
           resolve(file);
         },

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const style = {
-    ...theme.flex.rowBetween,
+    ...theme.flex.rowStart,
+    gap: "16px",
     width: "100%",
     marginBottom: "26px",
   };

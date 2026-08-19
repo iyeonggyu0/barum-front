@@ -1,6 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { makeupItemStyle } from "./MakeupItem.style";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-const MakeupItem = ({ data, isSkeleton = false }) => {
+const MakeupItem = ({ data, isSkeleton = false, deleteMode = false, onDelete, isDeleting = false }) => {
   if (isSkeleton) {
     return (
       <div css={makeupItemStyle} className="skeleton" aria-hidden="true">
@@ -26,6 +28,20 @@ const MakeupItem = ({ data, isSkeleton = false }) => {
   return (
     <div css={makeupItemStyle}>
       {data?.source === "SAMPLE" && <div className="ex">체험용</div>}
+      {data?.source !== "SAMPLE" && deleteMode && (
+        <button
+          type="button"
+          className="ex delete"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isDeleting) return;
+            onDelete?.(data);
+          }}
+          disabled={isDeleting}
+          aria-label={isDeleting ? "제품 삭제 중" : "제품 삭제"}>
+          <FontAwesomeIcon icon={faTrash} />
+        </button>
+      )}
       {data?.imageUrl && <img src={data?.imageUrl} alt="이미지" />}
       {!data?.imageUrl && <div className="noneImg"></div>}
       <div className="text-box">

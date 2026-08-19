@@ -125,7 +125,15 @@ const MakeupCamera = () => {
           <>
             <div className="alias">
               <p>제품 별칭</p>
-              <input value={alias} onChange={(e) => setAlias(e.target.value)} type="text" placeholder="예) 저자극 수분 크림" required aria-invalid={isAliasEmpty} maxLength={100} />
+              <input
+                value={alias}
+                onChange={(e) => setAlias(e.target.value)}
+                type="text"
+                placeholder="예) 저자극 수분 크림"
+                required
+                aria-invalid={isAliasEmpty}
+                maxLength={100}
+              />
             </div>
             <section className="camera">
               <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileSelect} />

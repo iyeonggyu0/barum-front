@@ -29,9 +29,11 @@ const MakeupItem = ({ data, isSkeleton = false }) => {
       {data?.imageUrl && <img src={data?.imageUrl} alt="이미지" />}
       {!data?.imageUrl && <div className="noneImg"></div>}
       <div className="text-box">
-        <p className="type">
-          {data?.brand}ㆍ{CATEGORY_MAP[data?.category]}
-        </p>
+        {data?.brand && (
+          <p className="type">
+            {data?.brand}ㆍ{CATEGORY_MAP[data?.category]}
+          </p>
+        )}
         <p className="name">{data?.name}</p>
         <p>
           {data?.keyIngredients?.map((item, idx) => (

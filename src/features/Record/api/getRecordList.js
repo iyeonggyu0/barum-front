@@ -11,5 +11,5 @@ export const getRecordList = async () => {
   }
 
   const res = await api.get(`/records?limit=${RECORD_LIMIT}`);
-  return res.data.item || [];
+  return res.data.items || [];
 };

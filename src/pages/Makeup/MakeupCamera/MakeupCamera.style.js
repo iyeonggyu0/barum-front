@@ -87,3 +87,27 @@ export const shootButton = css({
     },
   },
 });
+
+export const ocrLoadingStyle = css({
+  width: "100%",
+  flex: 1,
+  ...theme.flex.colCenter,
+  alignItems: "center",
+  justifyContent: "center",
+  gap: "28px",
+
+  "& .title": {
+    ...theme.fonts.display,
+    textAlign: "center",
+  },
+
+  "& .sub": {
+    ...theme.fonts.caption,
+    color: theme.colors.ink3,
+    textAlign: "center",
+  },
+
+  "& .item-box": {
+    width: "100%",
+  },
+});

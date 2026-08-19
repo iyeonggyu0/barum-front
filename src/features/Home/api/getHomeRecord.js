@@ -7,5 +7,5 @@ export const getHomeRecord = async () => {
   }
 
   const res = await api.get(`/records?limit=3`);
-  return res.data.item || [];
+  return res.data.items || [];
 };

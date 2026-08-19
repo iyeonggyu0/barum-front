@@ -79,7 +79,7 @@ const Camera = ({ onCapture, captureRef }) => {
     const startCamera = async () => {
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
+          video: { facingMode: { ideal: "environment" } },
           audio: false,
         });
 
@@ -131,7 +131,7 @@ const Camera = ({ onCapture, captureRef }) => {
     <div css={containerStyle}>
       <div css={badgeStyle}>
         <div css={dotStyle} />
-        <span>전면 카메라</span>
+        <span>후면 카메라</span>
       </div>
 
       <div css={guideStyle} />

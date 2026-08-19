@@ -1,10 +1,19 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { LeftButton, BarButton } from "@/components";
 import { BasicLayout } from "@/layouts";
 import { MakeupCameraView } from "@/features/Makeup/components";
 import { useMakeupOcrUpload } from "@/features/Makeup/hooks/useMakeupOcrUpload";
-import { layoutStyle, makeupCameraStyle, shootButton } from "./MakeupCamera.style";
+import { layoutStyle, makeupCameraStyle, ocrLoadingStyle, shootButton } from "./MakeupCamera.style";
+import {
+  loaderCoreStyle,
+  loaderOrbitSlowStyle,
+  loaderOrbitStyle,
+  loaderPctStyle,
+  loaderWaveStyle,
+  loaderWrapperStyle,
+  routineItem,
+} from "@/pages/Routine/RoutineLoading/RoutineLoading.style";
 
 const MakeupCamera = () => {
   const nav = useNavigate();
@@ -12,12 +21,32 @@ const MakeupCamera = () => {
   const fileInputRef = useRef(null);
   const cameraCaptureRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(18);
 
   const { mutate: uploadAndRecognize } = useMakeupOcrUpload();
   const cameraParam = searchParams.get("camera");
   const [alias, setAlias] = useState("");
   const trimmedAlias = alias.trim();
   const isAliasEmpty = !trimmedAlias;
+
+  useEffect(() => {
+    if (!isUploading) {
+      setLoadingProgress(18);
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setLoadingProgress((prev) => {
+        if (prev >= 92) {
+          return 92;
+        }
+
+        return Math.min(92, prev + 7);
+      });
+    }, 400);
+
+    return () => clearInterval(timer);
+  }, [isUploading]);
 
   const handleOcrUpload = (file) => {
     if (!file || isUploading || isAliasEmpty) {
@@ -33,6 +62,7 @@ const MakeupCamera = () => {
       { file, alias },
       {
         onSuccess: (result) => {
+          setLoadingProgress(100);
           setIsUploading(false);
           nav("/makeup/create/camera/result", { state: { ocrResult: result } });
         },
@@ -91,25 +121,64 @@ const MakeupCamera = () => {
 
       {/* 상태(isUploading)를 함수 인자로 전달 */}
       <section css={makeupCameraStyle}>
-        <div className="alias">
-          <p>제품 별칭</p>
-          <input value={alias} onChange={(e) => setAlias(e.target.value)} type="text" placeholder="예) 저자극 수분 크림" required aria-invalid={isAliasEmpty} />
-        </div>
-        <section className="camera">
-          <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileSelect} />
+        {!isUploading && (
+          <>
+            <div className="alias">
+              <p>제품 별칭</p>
+              <input value={alias} onChange={(e) => setAlias(e.target.value)} type="text" placeholder="예) 저자극 수분 크림" required aria-invalid={isAliasEmpty} maxLength={100} />
+            </div>
+            <section className="camera">
+              <input ref={fileInputRef} type="file" accept="image/*" hidden onChange={handleFileSelect} />
 
-          <MakeupCameraView captureRef={cameraCaptureRef} onCapture={handleOcrUpload} />
-        </section>
-        <div className="caption">
-          <p className="title">이렇게 찍으면 좋아요!</p>
-          <p className="sub">ㆍ 전성분표 전체가 잘리지 않고 화면에 모두 들어오게 해주세요.</p>
-          <p className="sub">ㆍ 글자에 그늘이 지거나 빛이 반사되지 않게 해주세요.</p>
-          <p className="sub">ㆍ 글자가 뭉개지지 않도록 흔들림 없이 또렷하게 찍어주세요.</p>
-        </div>
+              <MakeupCameraView captureRef={cameraCaptureRef} onCapture={handleOcrUpload} />
+            </section>
+            <div className="caption">
+              <p className="title">이렇게 찍으면 좋아요!</p>
+              <p className="sub">ㆍ 전성분표 전체가 잘리지 않고 화면에 모두 들어오게 해주세요.</p>
+              <p className="sub">ㆍ 글자에 그늘이 지거나 빛이 반사되지 않게 해주세요.</p>
+              <p className="sub">ㆍ 글자가 뭉개지지 않도록 흔들림 없이 또렷하게 찍어주세요.</p>
+            </div>
+          </>
+        )}
+
+        {isUploading && (
+          <section css={ocrLoadingStyle}>
+            <div css={loaderWrapperStyle}>
+              <i css={loaderWaveStyle} />
+              <i css={loaderWaveStyle} />
+              <i css={loaderWaveStyle} />
+
+              <div css={loaderOrbitStyle}>
+                <i />
+              </div>
+
+              <div css={loaderOrbitSlowStyle}>
+                <i />
+              </div>
+
+              <div css={loaderCoreStyle}>
+                <div css={loaderPctStyle}>{loadingProgress}%</div>
+              </div>
+            </div>
+
+            <div>
+              <p className="title">전성분표를 읽는 중</p>
+              <p className="sub">사진에서 성분을 찾고 있어요</p>
+            </div>
+
+            <div className="item-box">
+              <div className="item" css={routineItem("ing")}>
+                <span className="order">1</span>
+                <p className="name">성분 확인 중</p>
+                <p className="state">진행 중</p>
+              </div>
+            </div>
+          </section>
+        )}
       </section>
 
       <nav css={shootButton}>
-        {cameraParam === "none" && (
+        {!isUploading && cameraParam === "none" && (
           <div className="no-camera-container">
             <BarButton
               clickFun={() => {
@@ -124,7 +193,7 @@ const MakeupCamera = () => {
             </BarButton>
           </div>
         )}
-        {cameraParam !== "none" && (
+        {!isUploading && cameraParam !== "none" && (
           <div className="button-box">
             <div
               className="text"
@@ -148,6 +217,7 @@ const MakeupCamera = () => {
             <div className="text">{/* 공간 */}</div>
           </div>
         )}
+        {isUploading && <BarButton colorTheme="none">인식 중...</BarButton>}
       </nav>
     </BasicLayout>
   );

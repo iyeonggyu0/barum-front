@@ -31,6 +31,7 @@ const createSupabaseClientSafely = () => {
 export const supabase = createSupabaseClientSafely();
 
 let anonymousSignInPromise = null;
+let cachedAnonymousAuth = null;
 
 /**
  * Supabase 익명 세션을 확인하고, 없으면 익명 로그인을 수행하여 토큰과 userId를 반환합니다.
@@ -40,16 +41,22 @@ export const getAnonymousToken = async () => {
     throw new Error("Supabase 환경 변수가 올바르지 않습니다. .env의 VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY를 확인하세요.");
   }
 
+  if (cachedAnonymousAuth) {
+    return cachedAnonymousAuth;
+  }
+
   // 1. 이미 존재하는 세션이 있는지 확인
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
   if (session?.access_token) {
-    return {
+    cachedAnonymousAuth = {
       token: session.access_token,
       userId: session.user.id,
     };
+
+    return cachedAnonymousAuth;
   }
 
   // 2. 세션이 없다면 익명 로그인 진행 (앱 최초 진입 시)
@@ -66,10 +73,12 @@ export const getAnonymousToken = async () => {
           throw new Error("Supabase 익명 세션 응답이 올바르지 않습니다.");
         }
 
-        return {
+        cachedAnonymousAuth = {
           token: data.session.access_token,
           userId: data.user.id,
         };
+
+        return cachedAnonymousAuth;
       })
       .finally(() => {
         anonymousSignInPromise = null;

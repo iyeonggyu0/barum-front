@@ -27,8 +27,8 @@ const CrashBox = ({ isLoading, data }) => {
                 </p>
                 <p>{item.label}</p>
               </div>
-              {item.source && (
-                <a className="reason" href={item.source} target="_blank">
+              {item.sourceUrl && (
+                <a className="reason" href={item.sourceUrl} target="_blank" rel="noreferrer">
                   이유 보기
                 </a>
               )}
@@ -36,7 +36,7 @@ const CrashBox = ({ isLoading, data }) => {
 
             <div className="text">{item.reason}</div>
 
-            <p className="guide">근거ㆍ대한피부과학회 성분 가이드</p>
+            {item.sourceLabel && <p className="guide">근거ㆍ{item.sourceLabel}</p>}
           </div>
         </div>
       ))}

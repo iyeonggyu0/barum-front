@@ -1,11 +1,5 @@
 import api from "@/api";
 
-const getTodayKstDate = () => {
-  const now = new Date();
-  const kstDate = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-  return kstDate.toISOString().slice(0, 10);
-};
-
 const normalizeApiError = (error, fallbackCode = "EXTERNAL_API_ERROR", fallbackMessage = "요청 중 오류가 발생했습니다.") => {
   const code = error?.response?.data?.code || (error?.response?.status === 401 ? "UNAUTHORIZED" : null) || error?.code || fallbackCode;
   const message = error?.response?.data?.message || error?.message || fallbackMessage;
@@ -19,7 +13,6 @@ const buildSavePayload = (payload) => {
   }
 
   const nextPayload = {
-    date: payload.date || getTodayKstDate(),
     weather: payload.weather ?? undefined,
     skin: payload.skin ?? undefined,
     routine: payload.routine ?? { apply: [], skip: [] },
@@ -53,7 +46,7 @@ const buildSavePayload = (payload) => {
 export const saveRoutineRecord = async ({ payload }) => {
   if (import.meta.env.VITE_USE_MOCKUP === "true") {
     await new Promise((resolve) => setTimeout(resolve, 500));
-    return { date: payload?.date || getTodayKstDate() };
+    return { date: payload?.date };
   }
 
   try {
